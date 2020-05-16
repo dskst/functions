@@ -1,2 +1,2 @@
 # functions
-Function at GCP, Lambda
+Function at GCP, Lambda, and more
