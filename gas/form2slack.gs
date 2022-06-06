@@ -1,8 +1,8 @@
 function sendToSlack(body, channel) {
-    let url = "";
-    let data = { "channel" : channel, "username" : "bot name", "text" : body, "icon_emoji" : ":tada:" };
-    let payload = JSON.stringify(data);
-    let options = {
+    const url = "";
+    const data = { "channel" : channel, "username" : "user name", "text" : body, "icon_emoji" : ":calendar:" };
+    const payload = JSON.stringify(data);
+    const options = {
         "method" : "POST",
         "contentType" : "application/json",
         "payload" : payload
@@ -11,30 +11,29 @@ function sendToSlack(body, channel) {
 }
 
 function test() {
-    sendToSlack("This is just test", "");
+    sendToSlack("This is just test", "#channel_name");
 }
 
 function onFormSubmit(e) {
 
-    var notification_title = "slack notification body\n";
-    let itemResponse = e.response.getItemResponses();
+    const notification_title = "slack notification body";
+    const itemResponse = e.response.getItemResponses();
+    const notification_body = [
+        notification_title,
+        "from: " + e.response.getRespondentEmail()
+    ];
 
-    for (var i = 0; i < itemResponse.length; i++){
-        var formData = itemResponse[i];
+    for (let i = 0; i < itemResponse.length; i++){
+        const formData = itemResponse[i];
 
         switch (formData.getItem().getTitle()) {
-            case "title name":
-                var value = formData.getResponse();
-                break;
-            default:
-                break;
+        case "title":
+            notification_body.push("title: " + formData.getResponse());
+            break;
+        default:
+            break;
         }
     }
 
-    let notification_body = [
-        notification_title,
-        value
-    ].join("\n");
-
-    sendToSlack(notification_body, "");
+    sendToSlack(notification_body.join("\n"), "#channel_name");
 }
